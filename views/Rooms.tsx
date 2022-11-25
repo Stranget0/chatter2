@@ -8,7 +8,7 @@ const Rooms = () => {
   // const rooms = useRooms();
   const rooms: ChatRoom[] = [
     {
-      id: "0",
+      id: "1",
       name: "Alfred",
       image: {
         uri: "https://source.unsplash.com/featured/100x100",
@@ -17,7 +17,7 @@ const Rooms = () => {
       },
     },
     {
-      id: "1",
+      id: "2",
       name: "Sigmunt",
       image: {
         uri: "https://source.unsplash.com/featured/100x100",
