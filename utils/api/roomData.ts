@@ -1,5 +1,5 @@
 import { gql, QueryResult, useQuery } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { IMessage } from "react-native-gifted-chat";
 import { userFrag } from "../../lib/api";
 import { handleError } from "../errors";
@@ -26,31 +26,33 @@ export type RoomResponse = {
     messages: ChatMessage[];
   };
 };
-
-export const useRoomQuery = (roomId: string) => ({
-  loading: false,
-  refetch: () => null,
-  data: {
-    room: {
-      id: roomId,
-      name: "Alfred",
-      messages: [
-        {
-          body: "MESSAGE 1",
-          id: "1",
-          insertedAt: new Date(Date.now() - 1000 * 60).toISOString(),
-          user: {
-            email: "test2@gmail.com",
-            firstName: "Alfred",
-            id: "1",
-            lastName: "Smarzowski",
-            role: "user",
-          },
-        },
-      ],
-    },
-  },
-});
+export const user1 = {
+	email: "test2@gmail.com",
+	firstName: "Alfred",
+	id: "1",
+	lastName: "Smarzowski",
+	role: "user",
+}
+export const useRoomQuery = (roomId: string) => {
+	return useMemo(()=>({
+		loading: false,
+		refetch: () => null,
+		data: {
+			room: {
+				id: roomId,
+				name: "Alfred",
+				messages: [
+					{
+						body: "MESSAGE 1",
+						id: "1",
+						insertedAt: new Date(Date.now() - 1000 * 60).toISOString(),
+						user: user1
+					},
+				],
+			},
+		},
+	}),[]);
+};
 // useQuery<RoomResponse, RoomVariable>(roomQuery, {
 //   variables: { roomId },
 // });
@@ -65,9 +67,9 @@ export const useRoomData = (roomId: string): UseRoomDataReturn => {
   // if (error) handleError(error);
 
   // Update messages on enter
-  useEffect(() => {
-    refetchMessages();
-  }, [roomId]);
+  // useEffect(() => {
+  //   refetchMessages();
+  // }, [roomId]);
 
   // If fetched messages, set
   useEffect(() => {

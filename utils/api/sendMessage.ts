@@ -6,7 +6,7 @@ import {
   OperationVariables,
   useMutation,
 } from "@apollo/client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { IMessage } from "react-native-gifted-chat";
 import { userFrag } from "../../lib/api";
 import { luser } from "../../views/LogIn";
@@ -26,22 +26,24 @@ export const sendMessageQuery = gql`
 export type SendMessageResponse = { sendMessage: ChatMessage };
 
 let i = 1;
+const getMock = (body: string) => ({
+  data: {
+    sendMessage: {
+      body,
+      id: i++ + "",
+      insertedAt: new Date().toISOString(),
+      user: luser,
+    },
+  },
+  error: null,
+});
 export const useSendMessageQuery = () =>
   //  useMutation<SendMessageResponse>(sendMessageQuery);
-  [
-    () => null,
-    {
-      data: {
-        sendMessage: {
-          body: "MESSAGE " + i++,
-          id: i + "",
-          insertedAt: new Date().toISOString(),
-          user: luser,
-        },
-      },
-      error: null,
-    },
-  ] as const;
+  {
+    /*  useMutation<SendMessageResponse>(sendMessageQuery);*/
+    const [data, setData] = useState(getMock("FIRST"));
+    return [(v: string) => setData(getMock(v)), data] as const;
+  };
 
 export const useSendMessage = (
   roomId: string,
@@ -59,6 +61,6 @@ export const useSendMessage = (
   }, [sendMessageData]);
 
   const onSend = (messages: IMessage[]) =>
-    messages.forEach(({ text: body }) => sendMessage());
+    sendMessage(messages[messages.length - 1].text);
   return onSend;
 };

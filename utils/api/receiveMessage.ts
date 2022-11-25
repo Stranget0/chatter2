@@ -1,10 +1,11 @@
 import { gql, useSubscription } from "@apollo/client";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { IMessage } from "react-native-gifted-chat";
 import { userFrag } from "../../lib/api";
 import { handleError } from "../errors";
 import { messageToGiftedMessage } from "../gifted";
 import { roomIdVar } from "../global";
+import { user1 } from "./roomData";
 
 export const messageAddedQuery = gql`
 	subscription messageAdded(${roomIdVar}:String!){
@@ -15,11 +16,23 @@ export const messageAddedQuery = gql`
     ${userFrag}
   }
 }`;
-type MessageAddedResponse = { messageAdded: ChatMessage };
-export const useReceiveMessageQuery = (roomId: string) =>
-  useSubscription<MessageAddedResponse, RoomVariable>(messageAddedQuery, {
-    variables: { roomId },
-  });
+export const useReceiveMessageQuery = (roomId: string): any =>
+  useMemo(
+    () => ({
+      data: {
+        messageAdded: {
+          body: "SUBSCRIBED MESSAGE",
+          insertedAt: new Date().toISOString(),
+          id: "2",
+          user: user1,
+        },
+      },
+    }),
+    []
+  ); /* useSubscription<MessageAddedResponse, RoomVariable>(messageAddedQuery, {*/ // useSubscription<MessageAddedResponse, RoomVariable>(messageAddedQuery, {
+// useSubscription<MessageAddedResponse, RoomVariable>(messageAddedQuery, {
+//   variables: { roomId },
+// });
 
 export const useReceiveMessage = (
   roomId: string,

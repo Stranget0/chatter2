@@ -11,16 +11,16 @@ const Rooms = () => {
       id: "0",
       name: "Alfred",
       image: {
-        uri: "/assets/profile.svg",
+        uri: "https://source.unsplash.com/featured/100x100",
         width: 100,
         height: 100,
       },
     },
     {
       id: "1",
-      name: "Alfred2",
+      name: "Sigmunt",
       image: {
-        uri: "/assets/profile.svg",
+        uri: "https://source.unsplash.com/featured/100x100",
         width: 100,
         height: 100,
       },
